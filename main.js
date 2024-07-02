@@ -61,10 +61,16 @@ const render = async () => {
   const searchElem = document.querySelector('.search')
 
   optionsElem.addEventListener('click', (e) => {
-    if (e.target.classList.contains('options__item')) {
+    const target = e.target.parentElement
+    if (target.classList.contains('options__item')) {
       selectedElem !== false &&
-        selectedElem.querySelector(`#${e.target.id}`) === null &&
-        insertItem(selectedElem, createSelected(e.target))
+        selectedElem.querySelector(`#${target.id}`) === null &&
+        insertItem(
+          selectedElem,
+          createSelected(
+            optionsArray.find((item) => item.key === target.id).repo
+          )
+        )
     }
   })
 
@@ -83,7 +89,7 @@ const render = async () => {
       items &&
         items.forEach((item, i) => {
           const id = `opt${i}`
-          optionsArray.push({ repo: item.name, key: id })
+          optionsArray.push({ repo: item, key: id })
           insertItem(optionsElem, createOption(item.name, id))
           //
         })
