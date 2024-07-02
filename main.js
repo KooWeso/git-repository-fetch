@@ -60,6 +60,14 @@ const render = async () => {
   const selectedElem = document.querySelector('.selected')
   const searchElem = document.querySelector('.search')
 
+  optionsElem.addEventListener('click', (e) => {
+    if (e.target.classList.contains('options__item')) {
+      selectedElem !== false &&
+        selectedElem.querySelector(`#${e.target.id}`) === null &&
+        insertItem(selectedElem, createSelected(e.target))
+    }
+  })
+
   searchElem.addEventListener(
     'input',
     debounce(async (e) => {
@@ -78,12 +86,6 @@ const render = async () => {
           optionsArray.push({ repo: item.name, key: id })
           insertItem(optionsElem, createOption(item.name, id))
           //
-          const elem = document.getElementById(id)
-          elem.addEventListener('click', () => {
-            selectedElem !== false &&
-              selectedElem.querySelector(`#id${item.id}`) === null &&
-              insertItem(selectedElem, createSelected(item))
-          })
         })
     }, 600)
   )
