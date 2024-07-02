@@ -1,7 +1,5 @@
 const URL = 'https://api.github.com/search/repositories'
 
-const DATA_TYPE = {}
-
 const debounce = (fn, debounceTime) => {
   let id
   return function (...args) {
@@ -40,7 +38,7 @@ const createOption = (name, id) =>
   `<li class="options__item" id="${id}"><button>${name}</button></li>`
 const createSelected = (item) => {
   const { id, name, owner, stargazers_count: stars } = item
-  return `<li class="selected__list" id="id${id}"}>
+  return `<li class="selected__list" id="id${id}">
             <div class="selected__list-info">
               <h3>Name: ${name}</h3>
               <h4>Owner: ${owner.login}</h4>
@@ -62,15 +60,13 @@ const render = async () => {
 
   optionsElem.addEventListener('click', (e) => {
     const target = e.target.parentElement
+    const selectedItem = optionsArray.find(
+      (item) => item.key === target.id
+    ).repo
     if (target.classList.contains('options__item')) {
       selectedElem !== false &&
-        selectedElem.querySelector(`#${target.id}`) === null &&
-        insertItem(
-          selectedElem,
-          createSelected(
-            optionsArray.find((item) => item.key === target.id).repo
-          )
-        )
+        selectedElem.querySelector(`#id${selectedItem.id}`) === null &&
+        insertItem(selectedElem, createSelected(selectedItem))
     }
   })
 

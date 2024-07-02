@@ -135,4 +135,5 @@ body {
 .selected__list-info > *:not(:first-child) {
   border-top: white 2px solid;
   border-radius: 1px;
+  line-break: anywhere;
 }
