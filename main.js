@@ -67,6 +67,10 @@ const render = async () => {
       selectedElem !== false &&
         selectedElem.querySelector(`#id${selectedItem.id}`) === null &&
         insertItem(selectedElem, createSelected(selectedItem))
+      searchElem.value = ''
+      while (optionsElem.firstChild) {
+        optionsElem.removeChild(optionsElem.firstChild)
+      }
     }
   })
 
