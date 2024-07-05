@@ -58,6 +58,13 @@ const render = async () => {
   const selectedElem = document.querySelector('.selected')
   const searchElem = document.querySelector('.search')
 
+  const removeOptions = () => {
+    while (optionsElem.firstChild) {
+      optionsElem.removeChild(optionsElem.firstChild)
+    }
+    optionsArray.length = 0
+  }
+
   optionsElem.addEventListener('click', (e) => {
     const target = e.target.parentElement
     const selectedItem = optionsArray.find(
@@ -68,9 +75,7 @@ const render = async () => {
         selectedElem.querySelector(`#id${selectedItem.id}`) === null &&
         insertItem(selectedElem, createSelected(selectedItem))
       searchElem.value = ''
-      while (optionsElem.firstChild) {
-        optionsElem.removeChild(optionsElem.firstChild)
-      }
+      removeOptions()
     }
   })
 
@@ -78,12 +83,9 @@ const render = async () => {
     'input',
     debounce(async (e) => {
       let items = await fetchItems(e.target.value)
-
+      console.log(optionsArray, items)
       if (optionsArray.length !== 0) {
-        optionsArray.forEach((item) => {
-          document.getElementById(item.key).remove()
-        })
-        optionsArray.length = 0
+        removeOptions()
       }
 
       items &&
@@ -91,7 +93,6 @@ const render = async () => {
           const id = `opt${i}`
           optionsArray.push({ repo: item, key: id })
           insertItem(optionsElem, createOption(item.name, id))
-          //
         })
     }, 600)
   )
